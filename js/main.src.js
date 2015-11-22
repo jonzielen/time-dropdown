@@ -4,11 +4,11 @@ function createTimeList(options) {
     incRegExp = new RegExp(/^\d+$/);
 
     var options = {
-        'start': regExpTest(options.start, timeRegExp) || null,
-        'end': regExpTest(options.end, timeRegExp) || null,
-        'increment': regExpTest(options.increment, incRegExp) || null,
-        'selected': regExpTest(options.selected, timeRegExp) || null,
-        'format': options.format || null
+        parent: options.parent || null,
+        start: regExpTest(options.start, timeRegExp) || null,
+        end: regExpTest(options.end, timeRegExp) || null,
+        increment: regExpTest(options.increment, incRegExp) || null,
+        selected: regExpTest(options.selected, timeRegExp) || null
     };
 
     function regExpTest(val, reg) {
@@ -39,23 +39,42 @@ function createTimeList(options) {
         return Date.parse(mTime);
     }
 
-    function timeToString(time) {
-        // if (time < 10) {
-        //     return '0'+ time.toString();
-        // } else {
-        //     time.toString();
-        // }
+    function twoDigitMinutes(time) {
+        return (time < 10)? '0'+ time.toString() : time;
     }
 
     function millisecondsToTime(time) {
         mTime = new Date(time);
         var amPm = 'am';
         if (mTime.getHours() > 12) {
-            console.log((mTime.getHours() - 12), mTime.getMinutes(), 'pm');
+            return {
+                hh: mTime.getHours() - 12,
+                mm: twoDigitMinutes(mTime.getMinutes()),
+                ampm: 'pm'
+            };
         } else {
             amPm = (mTime.getHours() >= 12) ? 'pm' : amPm;
-            console.log(mTime.getHours(), mTime.getMinutes(), amPm);
+            return {
+                hh: mTime.getHours(),
+                mm: twoDigitMinutes(mTime.getMinutes()),
+                ampm: amPm
+            };
         }
+    }
+
+    function buildOption(times){
+        console.log(options.selected);
+
+        times.forEach(function(elem, index, array) {
+            var option = document.createElement('option'),
+            format = elem['hh']+':'+elem['mm']+elem['ampm'];
+
+            option.value = format;
+            option.text = format;
+            option.selected = (format == options.selected) ? true : false;
+
+            options.parent.appendChild(option);
+        });
     }
 
     function incrementTime() {
@@ -63,13 +82,15 @@ function createTimeList(options) {
             end = stringToTime(options.end),
             increment = Number(options.increment) * 60000;
 
-         var startTime = timeToMilliseconds(start);
-         var endTime = timeToMilliseconds(end);
+         start = timeToMilliseconds(start);
+         end = timeToMilliseconds(end);
 
-         while (startTime <= endTime) {
-             times.push(millisecondsToTime(startTime));
-             startTime = startTime + increment;
+         while (start <= end) {
+             times.push(millisecondsToTime(start));
+             start = start + increment;
          }
+
+         buildOption(times);
     }
 
     function goTime() {
@@ -79,15 +100,14 @@ function createTimeList(options) {
     return {
         goTime: goTime
     };
-
 }
 
 var select = document.querySelector('#times');
 
 createTimeList({
+    parent: select,
     start: '7:30am',
     end: '9:30pm',
     increment: '15',
-    selected: '12:00pm',
-    format: 'hh:mm'
+    selected: '12:00pm'
 }).goTime();
