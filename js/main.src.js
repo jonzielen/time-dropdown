@@ -1,60 +1,79 @@
 function createTimeList(options) {
-    var times = [];
-
-    function testEnteredUserTime(time) {
-        var timeFormat = new RegExp(/^(?:0?\d|1[012]):[0-5]\d[APap][mM]$/);
-        var res = timeFormat.test(time);
-
-        return (res === true)? time : error(time);
-    }
-
-    function testIncrementTime(increment) {
-        var incrementFormat = new RegExp(/^\d+$/);
-        var res = incrementFormat.test(increment);
-
-        return (res === true)? increment : error(increment);
-    }
-
-    function error(option) {
-        console.log('The format for "'+option+'" is incorrect.');
-    }
+    var times = [],
+    timeRegExp = new RegExp(/^(?:0?\d|1[012]):[0-5]\d[APap][mM]$/),
+    incRegExp = new RegExp(/^\d+$/);
 
     var options = {
-        'start': testEnteredUserTime(options.start) || '',
-        'end': testEnteredUserTime(options.end) || '',
-        'increment': testIncrementTime(options.increment) || '',
-        'selected': testEnteredUserTime(options.selected) || '',
-        'format': options.format || 'jom'
+        'start': regExpTest(options.start, timeRegExp) || null,
+        'end': regExpTest(options.end, timeRegExp) || null,
+        'increment': regExpTest(options.increment, incRegExp) || null,
+        'selected': regExpTest(options.selected, timeRegExp) || null,
+        'format': options.format || null
     };
 
-    if (options.hasOwnProperty('jom')) {
-        console.log('something is empty');
+    function regExpTest(val, reg) {
+        return (reg.test(val))? val : null;
+    }
+
+    function error(options) {
+        var errorMessage = '';
+        for (var i in options) {
+            if (options[i] === null) {
+                errorMessage += 'The formating for "'+i+'" is incorrect. ';
+            }
+        }
+
+        return errorMessage;
+    }
+
+    function stringToTime(time) {
+        var pm = (time.slice(-2) == 'pm') ? 12 : 0;
+        time = time.substring(0, time.length - 2).split(':').map(Number);
+        time[0] = time[0]+pm;
+        return time;
+    }
+
+    function timeToMilliseconds(time) {
+        mTime = new Date();
+        mTime.setHours(time[0], time[1], 00);
+        return Date.parse(mTime);
+    }
+
+    function timeToString(time) {
+        // if (time < 10) {
+        //     return '0'+ time.toString();
+        // } else {
+        //     time.toString();
+        // }
+    }
+
+    function millisecondsToTime(time) {
+        mTime = new Date(time);
+        var amPm = 'am';
+        if (mTime.getHours() > 12) {
+            console.log((mTime.getHours() - 12), mTime.getMinutes(), 'pm');
+        } else {
+            amPm = (mTime.getHours() >= 12) ? 'pm' : amPm;
+            console.log(mTime.getHours(), mTime.getMinutes(), amPm);
+        }
     }
 
     function incrementTime() {
-        console.log(times);
-        console.log(options);
+        var start = stringToTime(options.start),
+            end = stringToTime(options.end),
+            increment = Number(options.increment) * 60000;
 
-        var d = new Date();
-        d.setHours(7);
-        d.setMinutes(30);
-        d.setSeconds(00);
+         var startTime = timeToMilliseconds(start);
+         var endTime = timeToMilliseconds(end);
 
-        //console.log(d);
-
-
-
-
+         while (startTime <= endTime) {
+             times.push(millisecondsToTime(startTime));
+             startTime = startTime + increment;
+         }
     }
 
-
-
-
-
-
     function goTime() {
-        incrementTime();
-        //console.log();
+        return (error(options) == '')? incrementTime() : console.log(error(options));
     }
 
     return {
@@ -66,8 +85,9 @@ function createTimeList(options) {
 var select = document.querySelector('#times');
 
 createTimeList({
-    start: '7:00am',
-    end: '9:00pm',
-    increment: '1',
-    selected: '12:00pm'
+    start: '7:30am',
+    end: '9:30pm',
+    increment: '15',
+    selected: '12:00pm',
+    format: 'hh:mm'
 }).goTime();

@@ -3,3 +3,12 @@ body {
     margin:0;
     font-family: helvetica;
 }
+
+.wrapper {
+    width:800px;
+    margin: 0 auto;
+}
+
+select {
+    width:200px;
+}
