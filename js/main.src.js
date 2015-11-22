@@ -8,7 +8,7 @@ function createTimeList(parentElem) {
             parent: parentElem || null,
             start: regExpTest(options.start, timeRegExp) || null,
             end: regExpTest(options.end, timeRegExp) || null,
-            increment: regExpTest(options.increment, incRegExp) || null,
+            increment: regExpTest(options.increment, incRegExp) || 30,
             selected: regExpTest(options.selected, timeRegExp) || times[0]
         };
 
@@ -107,9 +107,8 @@ var time = createTimeList(document.querySelector('#times')).goTime({
 });
 
 var time2 = createTimeList(document.querySelector('#second-time')).goTime({
-    start: '10:30am',
-    end: '4:00pm',
-    increment: '30'
+    start: '12:30am',
+    end: '4:00pm'
 });
 
 // var time3 = createTimeList(document.querySelector('#not-real')).goTime({
