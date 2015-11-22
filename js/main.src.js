@@ -9,7 +9,7 @@ function createTimeList(parentElem) {
             start: regExpTest(options.start, timeRegExp) || null,
             end: regExpTest(options.end, timeRegExp) || null,
             increment: regExpTest(options.increment, incRegExp) || null,
-            selected: regExpTest(options.selected, timeRegExp) || null
+            selected: regExpTest(options.selected, timeRegExp) || times[0]
         };
 
         function regExpTest(val, reg) {
@@ -18,10 +18,9 @@ function createTimeList(parentElem) {
 
         function error(options) {
             var errorMessage = '';
+
             for (var i in options) {
-                if (options[i] === null) {
-                    errorMessage += 'The formating for "'+i+'" is incorrect. ';
-                }
+                errorMessage += (options[i] === null && i !== 'parent')? 'The formating for "'+i+'" is incorrect. ' : '';
             }
 
             return errorMessage;
@@ -92,7 +91,7 @@ function createTimeList(parentElem) {
              buildOption(times);
         }
 
-        return (error(options) == '')? incrementTime(options) : console.log(error(options));
+        return (error(options) == '')? incrementTime(options) : null;
     }
 
     return {
@@ -107,9 +106,15 @@ var time = createTimeList(document.querySelector('#times')).goTime({
     selected: '12:00pm'
 });
 
-var time3 = createTimeList(document.querySelector('#second-time')).goTime({
+var time2 = createTimeList(document.querySelector('#second-time')).goTime({
     start: '10:30am',
     end: '4:00pm',
-    increment: '30',
-    selected: '2:00pm'
+    increment: '30'
 });
+
+// var time3 = createTimeList(document.querySelector('#not-real')).goTime({
+//     start: '10:30am',
+//     end: '4:00pm',
+//     increment: '30',
+//     selected: '2:00pm'
+// });
