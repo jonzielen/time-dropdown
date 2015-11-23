@@ -18,7 +18,7 @@ function createTimeList(parentElem) {
 
         function error(options) {
             var errorMessage = '';
-            
+
             for (var i in options) {
                 errorMessage += (options[i] === null && i !== 'parent')? 'The formating for "'+i+'" is incorrect. ' : '';
             }
@@ -101,19 +101,19 @@ function createTimeList(parentElem) {
     };
 }
 
-var time = createTimeList(document.querySelector('#times')).goTime({
+createTimeList(document.querySelector('#times')).goTime({
     start: '7:30am',
     end: '9:30pm',
     increment: '15',
-    selected: '12:00pm'
+    selected: '12:45pm'
 });
 
-var time2 = createTimeList(document.querySelector('#second-time')).goTime({
+createTimeList(document.querySelector('#second-time')).goTime({
     start: '12:30am',
     end: '4:00pm'
 });
 
-var time3 = createTimeList(document.querySelector('#not-real')).goTime({
+createTimeList(document.querySelector('#not-real')).goTime({
     start: '10:30am',
     end: '4:00pm',
     increment: '30',
