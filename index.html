@@ -26,6 +26,26 @@
         </footer> -->
     </main>
 
-    <script src="js/main.src.js"></script>
+    <script src="js/main.min.js"></script>
+    <script>
+        createTimeList(document.querySelector('#times')).goTime({
+            start: '7:30am',
+            end: '9:30pm',
+            increment: '15',
+            selected: '12:45pm'
+        });
+
+        createTimeList(document.querySelector('#second-time')).goTime({
+            start: '12:30am',
+            end: '4:00pm'
+        });
+
+        createTimeList(document.querySelector('#not-real')).goTime({
+            start: '10:30am',
+            end: '4:00pm',
+            increment: '30',
+            selected: '2:00pm'
+        });
+    </script>
 </body>
 </html>
