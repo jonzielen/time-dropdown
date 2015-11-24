@@ -20,7 +20,7 @@
 
             <hr>
 
-            <select name="not-real" id="not-real"></select>
+            <select name="real-time" id="real-time"></select>
 
         </div>
     </main>
@@ -30,20 +30,20 @@
     <script src="js/main.min.js"></script>
     <script>
         // js
-        createTimeList(document.querySelector('#times')).goTime({
+        TimeList.createTimeList(document.querySelector('#times')).goTime({
             start: '7:30am',
             end: '9:30pm',
             increment: '15',
             selected: '12:45pm'
         });
 
-        createTimeList(document.querySelector('#second-time')).goTime({
+        TimeList.createTimeList(document.getElementById('second-time')).goTime({
             start: '12:30am',
             end: '4:00pm'
         });
 
         // jquery
-        $('#not-real').createTimeList({
+        $('#real-time').createTimeList({
             start: '10:00am',
             end: '4:00pm',
             increment: '30',
