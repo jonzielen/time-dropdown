@@ -100,3 +100,12 @@ function createTimeList(parentElem) {
         goTime: goTime
     };
 }
+
+// add jquery method
+(function() {
+    if (typeof jQuery !== 'undefined') {
+        $.fn.createTimeList = function(options) {
+            createTimeList(this[0]).goTime(options);
+        };
+    }
+})();

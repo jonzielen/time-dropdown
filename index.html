@@ -18,16 +18,18 @@
 
             <select name="second-time" id="second-time"></select>
 
+            <hr>
+
+            <select name="not-real" id="not-real"></select>
+
         </div>
-        <!-- <footer>
-            <ul>
-                <li><a href="http://renderedtext.com/blog/2015/11/18/closures-are-not-magic/" target="_blank">Closures are not magic</a></li>
-            </ul>
-        </footer> -->
     </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <script src="js/main.min.js"></script>
     <script>
+        // js
         createTimeList(document.querySelector('#times')).goTime({
             start: '7:30am',
             end: '9:30pm',
@@ -40,8 +42,9 @@
             end: '4:00pm'
         });
 
-        createTimeList(document.querySelector('#not-real')).goTime({
-            start: '10:30am',
+        // jquery
+        $('#not-real').createTimeList({
+            start: '10:00am',
             end: '4:00pm',
             increment: '30',
             selected: '2:00pm'
